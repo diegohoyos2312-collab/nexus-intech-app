@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Configuración de vista y codificación para dispositivos móviles -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#141413">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="NEXUS Intech">
+    <title>NEXUS Intech App | Ingeniería, Arquitectura y Proyectos — Colombia &amp; EE. UU.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Tokens visuales de marca NEXUS Intech */
+        :root {
+            --alabaster: #F6F4EF;
+            --stone: #EAE6DF;
+            --charcoal: #141413;
+            --bronze: #8C7A5B;
+            --bronze-light: #B8A482;
+            --white: #FFFFFF;
+            --gray-sub: #6E6D69;
+            --border-subtle: rgba(20, 20, 19, 0.12);
+            --whatsapp: #25D366;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #DCD7CD;
+            color: var(--charcoal);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        h1, h2, h3, h4, .serif-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+        }
+
+        /* Contenedor de aplicación móvil (ocupa toda la pantalla en celular y se centra en escritorio) */
+        .app-shell {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            background: var(--alabaster);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(20, 20, 19, 0.18);
+            position: relative;
+        }
+
+        /* Cabecera superior fija de la App */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(20, 20, 19, 0.96);
+            backdrop-filter: blur(10px);
+            color: var(--white);
+            padding: 0.85rem 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(184, 164, 130, 0.35);
+        }
+
+        .app-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+        }
+
+        .app-brand-name {
+            font-size: 0.98rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .app-brand-tag {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            background: var(--bronze);
+            color: var(--white);
+            padding: 0.2rem 0.5rem;
+            border-radius: 999px;
+        }
+
+        .app-install-btn {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            border-radius: 6px;
+            padding: 0.38rem 0.65rem;
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .app-install-btn:hover {
+            background: var(--bronze);
+            border-color: var(--bronze);
+        }
+
+        /* Área principal de desplazamiento */
+        .app-main {
+            flex: 1;
+            padding: 1rem 1rem 5.5rem 1rem;
+        }
+
+        .app-screen {
+            display: none;
+            animation: fadeScreen 0.22s ease;
+        }
+
+        .app-screen.active {
+            display: block;
+        }
+
+        @keyframes fadeScreen {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tarjeta de bienvenida en Inicio */
+        .hero-mobile {
+            background: linear-gradient(160deg, #141413 0%, #2B261E 100%);
+            color: var(--white);
+            border-radius: 14px;
+            padding: 1.35rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(184, 164, 130, 0.35);
+        }
+
+        .hero-mobile .kicker {
+            font-size: 0.66rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--bronze-light);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .hero-mobile h1 {
+            font-size: 1.85rem;
+            line-height: 1.12;
+            margin-bottom: 0.55rem;
+        }
+
+        .hero-mobile p {
+            font-size: 0.84rem;
+            color: rgba(255, 255, 255, 0.86);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .hero-btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+
+        .btn-solid-bronze {
+            background: var(--bronze);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            padding: 0.72rem 0.85rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            text-decoration: none;
+        }
+
+        .btn-outline-light {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 8px;
+            padding: 0.72rem 0.85rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            text-decoration: none;
+        }
+
+        /* Tarjetas y bloques */
+        .card-box {
+            background: var(--white);
+            border: 1px solid var(--stone);
+            border-radius: 12px;
+            padding: 1.05rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .card-box h2, .card-box h3 {
+            font-size: 1.45rem;
+            line-height: 1.15;
+            margin-bottom: 0.35rem;
+        }
+
+        .card-box p {
+            font-size: 0.83rem;
+            color: var(--gray-sub);
+            line-height: 1.5;
+        }
+
+        .corridor-mini-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.7rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .corridor-mini-card {
+            background: var(--white);
+            border: 1px solid var(--stone);
+            border-radius: 12px;
+            padding: 0.9rem;
+        }
+
+        .corridor-mini-card span {
+            font-size: 0.63rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--bronze);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .corridor-mini-card h4 {
+            font-size: 1.15rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .corridor-mini-card p {
+            font-size: 0.76rem;
+            color: var(--gray-sub);
+            line-height: 1.42;
+        }
+
+        .btn-dark-app {
+            width: 100%;
+            background: var(--charcoal);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            padding: 0.72rem 0.9rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            text-decoration: none;
+            margin-top: 0.65rem;
+        }
+
+        .btn-dark-app:hover {
+            background: var(--bronze);
+        }
+
+        /* Acordeones y listas de servicios */
+        .service-item-btn {
+            width: 100%;
+            background: var(--alabaster);
+            border: 1px solid var(--stone);
+            border-radius: 8px;
+            padding: 0.72rem 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.6rem;
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .service-item-btn:hover {
+            border-color: var(--bronze);
+            background: var(--white);
+        }
+
+        .service-item-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            line-height: 1.3;
+        }
+
+        .service-item-sub {
+            font-size: 0.7rem;
+            color: var(--gray-sub);
+            display: block;
+            margin-top: 0.12rem;
+        }
+
+        /* Formularios en la App */
+        .field-group {
+            margin-bottom: 0.8rem;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.35rem;
+            color: var(--charcoal);
+        }
+
+        .field-group input,
+        .field-group select,
+        .field-group textarea {
+            width: 100%;
+            padding: 0.7rem 0.8rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--alabaster);
+            font-family: inherit;
+            font-size: 0.84rem;
+            color: var(--charcoal);
+        }
+
+        .field-group input:focus,
+        .field-group select:focus,
+        .field-group textarea:focus {
+            outline: none;
+            border-color: var(--bronze);
+            background: var(--white);
+        }
+
+        .result-box {
+            display: none;
+            margin-top: 0.9rem;
+            padding: 0.85rem;
+            background: var(--stone);
+            border-left: 3px solid var(--bronze);
+            border-radius: 8px;
+        }
+
+        .action-stack {
+            display: grid;
+            gap: 0.55rem;
+            margin-top: 0.65rem;
+        }
+
+        .btn-wa-app {
+            background: var(--whatsapp);
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.72rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+        }
+
+        .btn-mail-app {
+            background: var(--charcoal);
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.72rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+        }
+
+        .btn-gmail-app {
+            background: var(--bronze);
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.72rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+        }
+
+        .btn-copy-app {
+            background: var(--white);
+            color: var(--charcoal);
+            border: 1px solid var(--charcoal);
+            padding: 0.68rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            font-family: inherit;
+        }
+
+        /* Aviso de instalación */
+        .install-banner {
+            display: none;
+            background: var(--white);
+            border: 1px solid var(--bronze);
+            border-radius: 10px;
+            padding: 0.85rem;
+            margin-bottom: 0.85rem;
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
+        /* Barra inferior de navegación de la App */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--stone);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 0.4rem 0.25rem 0.65rem 0.25rem;
+            z-index: 45;
+        }
+
+        .nav-tab {
+            background: transparent;
+            border: none;
+            color: var(--gray-sub);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.22rem;
+            padding: 0.35rem 0.15rem;
+            font-size: 0.66rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .nav-tab i {
+            font-size: 1.05rem;
+        }
+
+        .nav-tab.active {
+            color: var(--bronze);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Encabezado de la App -->
+        <header class="app-header">
+            <div class="app-brand">
+                <span class="app-brand-name">NEXUS Intech</span>
+                <span class="app-brand-tag">APP &bull; CO/US</span>
+            </div>
+            <button type="button" class="app-install-btn" onclick="toggleInstallHelp()">
+                <i class="fa-solid fa-download"></i> Instalar
+            </button>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="app-main">
+            <!-- Guía rápida para instalar en celular -->
+            <div class="install-banner" id="installHelpBanner">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+                    <strong style="color:var(--bronze);">Instalar App en tu Celular</strong>
+                    <button type="button" onclick="toggleInstallHelp()" style="background:none; border:none; font-size:1rem; cursor:pointer;">&times;</button>
+                </div>
+                <p style="color:var(--charcoal);">
+                    <strong>Android (Chrome):</strong> toca los tres puntos (&#8942;) y elige <em>Agregar a la pantalla principal</em> o <em>Instalar aplicación</em>.<br>
+                    <strong>iPhone (Safari):</strong> toca <em>Compartir</em> y luego <em>Agregar a inicio</em>.
+                </p>
+            </div>
+
+            <!-- PANTALLA 1: INICIO -->
+            <section class="app-screen active" id="screenInicio">
+                <div class="hero-mobile">
+                    <span class="kicker">Ing. Diego Hoyos &bull; Project Manager &amp; CEO</span>
+                    <h1>Ingeniería, Arquitectura y Gestión Patrimonial</h1>
+                    <p>Operación en toda Colombia y venta/negociación de proyectos y servicios con clientes en Estados Unidos.</p>
+                    <div class="hero-btn-row">
+                        <button type="button" class="btn-solid-bronze" onclick="goToScreen('screenDivisiones', document.getElementById('tabDiv'))">
+                            <i class="fa-solid fa-layer-group"></i> Divisiones
+                        </button>
+                        <button type="button" class="btn-outline-light" onclick="goToScreen('screenCotizar', document.getElementById('tabCot'))">
+                            <i class="fa-solid fa-handshake"></i> Cotizar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="corridor-mini-grid">
+                    <div class="corridor-mini-card">
+                        <span>Corredor 01</span>
+                        <h4>Todo Colombia</h4>
+                        <p>Inmobiliaria, obras civiles, licencias, equipos, cuadrillas e ingeniería.</p>
+                    </div>
+                    <div class="corridor-mini-card">
+                        <span>Corredor 02</span>
+                        <h4>Estados Unidos</h4>
+                        <p>Venta de proyectos, negociación, ingeniería civil, BIM, 3D y análisis.</p>
+                    </div>
+                </div>
+
+                <div class="card-box">
+                    <span style="font-size:0.65rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--bronze); display:block; margin-bottom:0.2rem;">Canal Inmediato</span>
+                    <h3>Habla Directamente con NEXUS Intech</h3>
+                    <p>Correo oficial: <strong>nexusintech2026@gmail.com</strong> &bull; WhatsApp: <strong>+1 415 589 9579</strong>.</p>
+                    <a href="https://wa.me/14155899579?text=Hola%20NEXUS%20Intech%20(nexusintech2026%40gmail.com)%2C%20me%20comunico%20desde%20la%20App%20M%C3%B3vil." target="_blank" rel="noopener" class="btn-wa-app" style="margin-top:0.75rem;">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp Directo (+1 415 589 9579)
+                    </a>
+                </div>
+            </section>
+
+            <!-- PANTALLA 2: DIVISIONES Y 11 SERVICIOS -->
+            <section class="app-screen" id="screenDivisiones">
+                <div class="card-box">
+                    <span style="font-size:0.65rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--bronze); display:block; margin-bottom:0.2rem;">01 &bull; Gestión Patrimonial</span>
+                    <h3>NEXUS Inmobiliaria</h3>
+                    <p>Compra, venta, arrendamiento, captación e inversión en Colombia (sin precios públicos abiertos; consulta directa).</p>
+                    <button type="button" class="btn-dark-app" onclick="selectServiceAndQuote('Inmobiliaria — Consulta / Inversión')">
+                        <i class="fa-solid fa-building"></i> Consultar Inmueble o Inversión
+                    </button>
+                </div>
+
+                <div class="card-box">
+                    <span style="font-size:0.65rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--bronze); display:block; margin-bottom:0.2rem;">02 &bull; Obras, Equipos y Cuadrillas</span>
+                    <h3>NEXUS Construcción</h3>
+                    <p>Elige el área constructiva o de equipos para cotizar al instante:</p>
+                    <div style="margin-top:0.6rem;">
+                        <button type="button" class="service-item-btn" onclick="selectServiceAndQuote('Ejecución de Obras Civiles — Construcción')">
+                            <div>
+                                <span class="service-item-title">Ejecución de Obras Civiles (Construcción)</span>
+                                <span class="service-item-sub">Obra civil, edificaciones y ejecución en campo</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right" style="color:var(--bronze);"></i>
+                        </button>
+                        <button type="button" class="service-item-btn" onclick="selectServiceAndQuote('Ejecución de Obras Civiles — Planeación')">
+                            <div>
+                                <span class="service-item-title">Planeación y Presupuestos</span>
+                                <span class="service-item-sub">Cronogramas, cantidades y programación de obra</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right" style="color:var(--bronze);"></i>
+                        </button>
+                        <button type="button" class="service-item-btn" onclick="selectServiceAndQuote('Ejecución de Obras Civiles — Licencias')">
+                            <div>
+                                <span class="service-item-title">Trámites y Licencias</span>
+                                <span class="service-item-sub">Gestión documental y viabilidad normativa</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right" style="color:var(--bronze);"></i>
+                        </button>
+                        <button type="button" class="service-item-btn" onclick="selectServiceAndQuote('Alquiler de Equipos — Encofrados, Maquinaria y Andamios')">
+                            <div>
+                                <span class="service-item-title">Alquiler de Equipos</span>
+                                <span class="service-item-sub">Sistemas modulares y encofrado, maquinaria y andamios</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right" style="color:var(--bronze);"></i>
+                        </button>
+                        <button type="button" class="service-item-btn" onclick="selectServiceAndQuote('Personal Capacitado — Maestros, Oficiales y Ayudantes')">
+                            <div>
+                                <span class="service-item-title">Personal Capacitado</span>
+                                <span class="service-item-sub">Maestros de obra, oficiales y ayudantes certificados</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right" style="color:var(--bronze);"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-box">
+                    <span style="font-size:0.65rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--bronze); display:block; margin-bottom:0.2rem;">03 &bull; 11 Líneas Especializadas</span>
+                    <h3>Ingeniería y Tecnología</h3>
+                    <p>Toca cualquiera de las 11 líneas para enviarla directo al cotizador:</p>
+                    <div id="mobileTechList" style="margin-top:0.65rem;"></div>
+                </div>
+            </section>
+
+            <!-- PANTALLA 3: COTIZAR / NEGOCIAR -->
+            <section class="app-screen" id="screenCotizar">
+                <div class="card-box">
+                    <span style="font-size:0.65rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--bronze); display:block; margin-bottom:0.2rem;">Cotización y Negociación</span>
+                    <h3>Enviar Solicitud o Proyecto</h3>
+                    <p>Destino: <strong>nexusintech2026@gmail.com</strong> y WhatsApp <strong>+1 415 589 9579</strong>.</p>
+
+                    <form id="appForm" onsubmit="handleAppFormSubmit(event)" style="margin-top:0.8rem;">
+                        <div class="field-group">
+                            <label for="aName">Nombre Completo / Empresa *</label>
+                            <input type="text" id="aName" required placeholder="Tu nombre o empresa">
+                        </div>
+                        <div class="field-group">
+                            <label for="aPhone">Teléfono / WhatsApp *</label>
+                            <input type="tel" id="aPhone" required placeholder="+1 415 589 9579 o +57 300 000 0000">
+                        </div>
+                        <div class="field-group">
+                            <label for="aEmail">Tu Correo Electrónico *</label>
+                            <input type="email" id="aEmail" required placeholder="correo@ejemplo.com">
+                        </div>
+                        <div class="field-group">
+                            <label for="aRegion">País / Ciudad *</label>
+                            <select id="aRegion" required>
+                                <option value="Estados Unidos — Cliente / Proyecto EE. UU.">Estados Unidos — Cliente / Proyecto EE. UU.</option>
+                                <option value="Colombia — Toda Colombia">Colombia — Toda Colombia</option>
+                                <option value="Colombia — Villavicencio / Meta">Colombia — Villavicencio / Meta</option>
+                                <option value="Conexión Internacional Colombia - EE. UU.">Conexión Internacional Colombia - EE. UU.</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label for="aService">Servicio, Línea o Proyecto *</label>
+                            <select id="aService" required>
+                                <option value="Venta y Negociación de Proyectos (EE. UU. / Colombia)">Venta y Negociación de Proyectos (EE. UU. / Colombia)</option>
+                                <option value="Ingeniería Civil">Ingeniería Civil</option>
+                                <option value="Asesoría con Profesionales en Distintas Ingenierías">Asesoría con Profesionales en Distintas Ingenierías</option>
+                                <option value="Levantamientos con Drones">Levantamientos con Drones</option>
+                                <option value="Topografía">Topografía</option>
+                                <option value="Modelado BIM">Modelado BIM</option>
+                                <option value="Modelado y Visualización 3D">Modelado y Visualización 3D</option>
+                                <option value="Impresión de Planos">Impresión de Planos</option>
+                                <option value="Uniformes de Trabajo">Uniformes de Trabajo</option>
+                                <option value="Publicidad">Publicidad</option>
+                                <option value="Análisis">Análisis</option>
+                                <option value="Ejecución de Obras Civiles">Ejecución de Obras Civiles</option>
+                                <option value="Alquiler de Equipos">Alquiler de Equipos</option>
+                                <option value="Personal Capacitado">Personal Capacitado</option>
+                                <option value="Inmobiliaria">Inmobiliaria</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label for="aSchedule">Horario Disponible *</label>
+                            <input type="text" id="aSchedule" required placeholder="Ej. Lunes a viernes, 10:00 a.m. - 3:00 p.m.">
+                        </div>
+                        <div class="field-group">
+                            <label for="aDesc">Detalles del Proyecto o Requerimiento *</label>
+                            <textarea id="aDesc" rows="3" required placeholder="Describe lo que necesitas cotizar, comprar o negociar..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-solid-bronze" style="width:100%; padding:0.85rem;">
+                            <i class="fa-solid fa-paper-plane"></i> Preparar Envío a Correo y WhatsApp
+                        </button>
+                    </form>
+
+                    <div class="result-box" id="appFormResult">
+                        <strong style="font-size:0.82rem; color:var(--charcoal);">Solicitud lista para nexusintech2026@gmail.com:</strong>
+                        <div class="action-stack">
+                            <a id="appResWa" href="#" target="_blank" rel="noopener" class="btn-wa-app">
+                                <i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp (+1 415 589 9579)
+                            </a>
+                            <a id="appResMail" href="#" class="btn-mail-app">
+                                <i class="fa-solid fa-envelope"></i> Enviar por Correo (nexusintech2026@gmail.com)
+                            </a>
+                            <a id="appResGmail" href="#" target="_blank" rel="noopener" class="btn-gmail-app">
+                                <i class="fa-brands fa-google"></i> Abrir en Gmail Web
+                            </a>
+                            <button type="button" class="btn-copy-app" onclick="copyEmailApp()">
+                                <i class="fa-regular fa-copy"></i> Copiar nexusintech2026@gmail.com
+                            </button>
+                        </div>
+                        <div id="appCopyMsg" style="margin-top:0.5rem; font-size:0.75rem; font-weight:700; color:var(--bronze);"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PANTALLA 4: CONTACTO DIRECTO -->
+            <section class="app-screen" id="screenContacto">
+                <div class="hero-mobile" style="margin-bottom:0.85rem;">
+                    <span class="kicker">Dirección Ejecutiva</span>
+                    <h1 style="font-size:1.65rem;">Ingeniero Diego Hoyos</h1>
+                    <p style="margin-bottom:0;">Project Manager &bull; CEO — NEXUS Intech (Colombia &amp; Estados Unidos)</p>
+                </div>
+
+                <div class="card-box">
+                    <h3>Canales Oficiales Directos</h3>
+                    <p>Comunícate sin intermediarios para proyectos, servicios o alianzas.</p>
+                    <div class="action-stack">
+                        <a href="https://wa.me/14155899579?text=Hola%20NEXUS%20Intech%20(nexusintech2026%40gmail.com)%2C%20deseo%20informaci%C3%B3n%20sobre%20sus%20servicios%20o%20proyectos." target="_blank" rel="noopener" class="btn-wa-app">
+                            <i class="fa-brands fa-whatsapp"></i> WhatsApp: +1 415 589 9579
+                        </a>
+                        <a href="mailto:nexusintech2026@gmail.com?subject=Contacto%20desde%20App%20NEXUS%20Intech" class="btn-mail-app">
+                            <i class="fa-solid fa-envelope"></i> Correo: nexusintech2026@gmail.com
+                        </a>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nexusintech2026@gmail.com&su=Contacto%20desde%20App%20NEXUS%20Intech" target="_blank" rel="noopener" class="btn-gmail-app">
+                            <i class="fa-brands fa-google"></i> Redactar en Gmail
+                        </a>
+                        <button type="button" class="btn-copy-app" onclick="copyEmailApp()">
+                            <i class="fa-regular fa-copy"></i> Copiar Correo nexusintech2026@gmail.com
+                        </button>
+                    </div>
+                    <div id="appCopyMsgContact" style="margin-top:0.5rem; font-size:0.75rem; font-weight:700; color:var(--bronze);"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Barra inferior de navegación -->
+        <nav class="bottom-nav" aria-label="Navegación principal de la App">
+            <button type="button" class="nav-tab active" id="tabIni" onclick="goToScreen('screenInicio', this)">
+                <i class="fa-solid fa-house"></i>
+                <span>Inicio</span>
+            </button>
+            <button type="button" class="nav-tab" id="tabDiv" onclick="goToScreen('screenDivisiones', this)">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Divisiones</span>
+            </button>
+            <button type="button" class="nav-tab" id="tabCot" onclick="goToScreen('screenCotizar', this)">
+                <i class="fa-solid fa-file-signature"></i>
+                <span>Cotizar</span>
+            </button>
+            <button type="button" class="nav-tab" id="tabCon" onclick="goToScreen('screenContacto', this)">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>Contacto</span>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        // Datos oficiales de contacto de NEXUS Intech
+        const NEXUS_EMAIL = 'nexusintech2026@gmail.com';
+        const NEXUS_WHATSAPP = '14155899579';
+
+        // Las 11 líneas de Ingeniería y Tecnología
+        const TECH_LINES = [
+            { num: '01', name: 'Asesoría con Profesionales en Distintas Ingenierías', desc: 'Revisión técnica, validación y acompañamiento especializado' },
+            { num: '02', name: 'Levantamientos con Drones', desc: 'Ortofotos, volúmenes y seguimiento aéreo de obra' },
+            { num: '03', name: 'Topografía', desc: 'Curvas de nivel, replanteos y linderos en campo' },
+            { num: '04', name: 'Modelado BIM', desc: 'Modelos digitales, coordinación y cantidades de obra' },
+            { num: '05', name: 'Modelado y Visualización 3D', desc: 'Renders y recorridos 3D para presentar y vender' },
+            { num: '06', name: 'Impresión de Planos', desc: 'Plotteo, copias y armado de carpetas de planos' },
+            { num: '07', name: 'Uniformes de Trabajo', desc: 'Dotación y prendas laborales para equipos y obra' },
+            { num: '08', name: 'Publicidad', desc: 'Vallas, material comercial y difusión de proyectos' },
+            { num: '09', name: 'Análisis', desc: 'Viabilidad técnica, costos, rentabilidad y riesgos' },
+            { num: '10', name: 'Ingeniería Civil', desc: 'Diseño, planeación y soporte de obra civil (CO / US)' },
+            { num: '11', name: 'Venta y Negociación de Proyectos', desc: 'Estructuración y cierre de proyectos en EE. UU. y Colombia' }
+        ];
+
+        // Cambia entre pantallas de la App
+        function goToScreen(screenId, tabButton) {
+            document.querySelectorAll('.app-screen').forEach(sc => sc.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(tb => tb.classList.remove('active'));
+
+            const target = document.getElementById(screenId);
+            if (target) target.classList.add('active');
+            if (tabButton) tabButton.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleInstallHelp() {
+            const banner = document.getElementById('installHelpBanner');
+            if (!banner) return;
+            banner.style.display = banner.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Renderiza las 11 líneas en la pestaña Divisiones
+        function renderMobileTechLines() {
+            const list = document.getElementById('mobileTechList');
+            if (!list) return;
+            list.innerHTML = TECH_LINES.map(item => `
+                <button type="button" class="service-item-btn" onclick="selectServiceAndQuote('${item.name.replace(/'/g, "\\'")}')">
+                    <div>
+                        <span class="service-item-title">${item.num}. ${item.name}</span>
+                        <span class="service-item-sub">${item.desc}</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right" style="color:var(--bronze);"></i>
+                </button>
+            `).join('');
+        }
+
+        // Preselecciona un servicio en el formulario Cotizar y lleva al usuario ahí
+        function selectServiceAndQuote(serviceName) {
+            const selectEl = document.getElementById('aService');
+            if (selectEl) {
+                const exists = Array.from(selectEl.options).some(opt => opt.value === serviceName);
+                if (!exists) {
+                    const customOpt = document.createElement('option');
+                    customOpt.value = serviceName;
+                    customOpt.textContent = serviceName;
+                    selectEl.appendChild(customOpt);
+                }
+                selectEl.value = serviceName;
+            }
+            goToScreen('screenCotizar', document.getElementById('tabCot'));
+        }
+
+        // Construye los enlaces directos a correo, Gmail y WhatsApp
+        function handleAppFormSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('aName').value.trim();
+            const phone = document.getElementById('aPhone').value.trim();
+            const email = document.getElementById('aEmail').value.trim();
+            const region = document.getElementById('aRegion').value;
+            const service = document.getElementById('aService').value;
+            const schedule = document.getElementById('aSchedule').value.trim();
+            const desc = document.getElementById('aDesc').value.trim();
+
+            const subject = `NEXUS Intech App - ${service} (${region})`;
+            const body = [
+                `Canal: App Móvil NEXUS Intech`,
+                `Destino: ${NEXUS_EMAIL}`,
+                `País / Ubicación: ${region}`,
+                `Servicio / Línea / Proyecto: ${service}`,
+                `Nombre / Empresa: ${name}`,
+                `Teléfono / WhatsApp: ${phone}`,
+                `Correo del remitente: ${email}`,
+                `Horario disponible: ${schedule}`,
+                `Descripción: ${desc}`
+            ].join('\n');
+
+            document.getElementById('appResWa').href = `https://wa.me/${NEXUS_WHATSAPP}?text=${encodeURIComponent('Hola NEXUS Intech,\n' + body)}`;
+            document.getElementById('appResMail').href = `mailto:${NEXUS_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            document.getElementById('appResGmail').href = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(NEXUS_EMAIL)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            document.getElementById('appFormResult').style.display = 'block';
+        }
+
+        function copyEmailApp() {
+            const setMsgs = (txt) => {
+                const m1 = document.getElementById('appCopyMsg');
+                const m2 = document.getElementById('appCopyMsgContact');
+                if (m1) m1.textContent = txt;
+                if (m2) m2.textContent = txt;
+            };
+
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(NEXUS_EMAIL).then(() => {
+                        setMsgs(`Copiado: ${NEXUS_EMAIL}`);
+                    }).catch(() => fallbackCopy(NEXUS_EMAIL, setMsgs));
+                } else {
+                    fallbackCopy(NEXUS_EMAIL, setMsgs);
+                }
+            } catch (err) {
+                fallbackCopy(NEXUS_EMAIL, setMsgs);
+            }
+        }
+
+        function fallbackCopy(text, setMsgs) {
+            try {
+                const input = document.createElement('input');
+                input.value = text;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                setMsgs(`Copiado: ${text}`);
+            } catch (err) {
+                setMsgs(`Correo: ${text}`);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMobileTechLines();
+        });
+    </script>
+</body>
+</html>
